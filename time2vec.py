@@ -47,9 +47,6 @@ class Time2Vec(nn.Module):
         self.W = nn.Parameter(torch.empty(features_dim, embedding_out))
         self.b = nn.Parameter(torch.empty(in_features, embedding_out))
 
-        for name in ("W0", "b0", "W", "b"):
-            self.register_parameter(name, getattr(self, name))
-
         self.reset_parameters()
 
     def reset_parameters(self):
