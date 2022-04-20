@@ -14,7 +14,9 @@ class Time2Vec(nn.Module):
         func: Callable[[torch.Tensor], torch.Tensor] = torch.sin,
     ):
         """
-        a Time2Vec implements class
+        a Time2Vec layer based on:
+        [1] "Time2Vec: Learning a Vector Representation of Time",
+             Kazemi et al., 2019.
 
         Parameters
         ----------
@@ -72,8 +74,8 @@ class Time2Vec(nn.Module):
         b = self.b.repeat(batch_size, 1, 1)
 
         original = torch.bmm(W0, tau) + b0
-        sin_trans = self.func(torch.bmm(tau, W) + b)
+        trans = self.func(torch.bmm(tau, W) + b)
 
         # output : (batch_size, in_features, (embedding_dim + 1) * features_dim)
-        output = torch.cat([sin_trans, original], dim=-1)
+        output = torch.cat([trans, original], dim=-1)
         return output
