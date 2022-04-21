@@ -69,3 +69,8 @@ class Time2Vec(nn.Module):
         x[:, 1:, :] = self.func(x[:, 1:, :])
 
         return x
+
+    def extra_repr(self) -> str:
+        return "in_features={}, out_features={}, features_dim={}".format(
+            self.in_features, self.out_features, self.features_dim
+        )
