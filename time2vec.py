@@ -59,15 +59,9 @@ class Time2Vec(nn.Module):
 
     def forward(self, tau: torch.Tensor) -> torch.Tensor:
         # tau: (batch_size, in_features, features_dim)
-        batch_size = tau.shape[0]
-
-        W = self.weight.repeat(batch_size, 1, 1, 1)
-        b = self.bias.repeat(batch_size, 1, 1)
-
-        # x: (batch_size, out_features, features_dim)
-        x = torch.einsum("bfoi,bif->bof", W, tau) + b
+        x = torch.einsum("foi,bif->bof", self.weight, tau) + self.bias
         x[:, 1:, :] = self.func(x[:, 1:, :])
-
+        # x: (batch_size, out_features, features_dim)
         return x
 
     def extra_repr(self) -> str:
